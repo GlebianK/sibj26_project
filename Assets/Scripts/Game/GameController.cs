@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     public static GameController Instance { get; private set; }
 
     [SerializeField] private bool _initOnStart = true;
+    [SerializeField] private bool _skipMenu = true;
 
     private void Initialize()
     {
@@ -42,6 +43,13 @@ public class GameController : MonoBehaviour
     private async UniTaskVoid PrepareNewGameAsync(CancellationToken token)
     {
         //Подготовка и конфигурация сцены, обновление состояний
+
+        if (_skipMenu)
+        {
+            CurtainSingle.Instance.HideImmidiate();
+            Blackboard.GameStateProperty.Value = GameState.Running;
+            return;
+        }
 
         //Показываем главное меню
         UI_ControllerSingle.Instance.ShowViewImmidiate(UI_ViewKey.MainMenu);
