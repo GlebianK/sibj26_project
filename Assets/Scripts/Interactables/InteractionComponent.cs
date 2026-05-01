@@ -63,6 +63,11 @@ public class InteractionComponent : MonoBehaviour
     private void Interaction_performed(InputAction.CallbackContext obj)
     {
         Debug.Log("ÂÇÀÈÌÎÄÅÉÑÒÂÈÅ Æ!");
+
+        if (!InteractionManager.Instance.IsInInteraction)
+            InteractionManager.Instance.TryInteract(this.gameObject);
+        else
+            InteractionManager.Instance.CompleteInteraction();
     }
 
     private void OnDrawGizmos()
