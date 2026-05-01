@@ -8,7 +8,7 @@ public class InteractionManager : MonoBehaviour
 
     public bool IsInInteraction { get; private set; }
 
-    private InteractableBase.InteractableType lastType;
+    private InteractableType lastType;
 
     private void Awake()
     {
@@ -16,7 +16,7 @@ public class InteractionManager : MonoBehaviour
             Instance = this;
 
         IsInInteraction = false;
-        lastType = InteractableBase.InteractableType.None;
+        lastType = InteractableType.None;
     }
 
     public void TryInteract(GameObject interactionInitiator)
@@ -31,15 +31,15 @@ public class InteractionManager : MonoBehaviour
 
         switch (Blackboard.SelectedInteractable.Value.Type)  // TODO: в кейсах прописать действия игрока (изменение стейтов/анимаций)
         {
-            case InteractableBase.InteractableType.Evironment:
+            case InteractableType.Evironment:
                 break;
-            case InteractableBase.InteractableType.Movable:
+            case InteractableType.Movable:
                 break;
-            case InteractableBase.InteractableType.Togglable:
+            case InteractableType.Togglable:
                 Blackboard.SelectedInteractable.Value.Interact();
                 IsInInteraction = false;
                 break;
-            case InteractableBase.InteractableType.Item:
+            case InteractableType.Item:
                 Blackboard.SelectedInteractable.Value.Interact();
                 break;
             default:
@@ -60,7 +60,7 @@ public class InteractionManager : MonoBehaviour
         if (isDebugging)
             Debug.Log("IM: <color=yellow>cancelling interaction...</color>");
 
-        if (lastType == InteractableBase.InteractableType.None || !IsInInteraction)
+        if (lastType == InteractableType.None|| !IsInInteraction)
         {
             if (isDebugging)
                 Debug.Log("<color=yellow>Trying to cancel interaction with</color> <color=red>NULL</color>");
@@ -69,15 +69,15 @@ public class InteractionManager : MonoBehaviour
 
         switch (Blackboard.SelectedInteractable.Value.Type)  // TODO: в кейсах прописать действия игрока (изменение стейтов/анимаций)
         {
-            case InteractableBase.InteractableType.Evironment:
+            case InteractableType.Evironment:
                 break;
-            case InteractableBase.InteractableType.Movable:
+            case InteractableType.Movable:
                 break;
-            case InteractableBase.InteractableType.Togglable:
+            case InteractableType.Togglable:
                 Blackboard.SelectedInteractable.Value.Interact();
                 IsInInteraction = false;
                 break;
-            case InteractableBase.InteractableType.Item:
+            case InteractableType.Item:
                 Blackboard.SelectedInteractable.Value.Interact();
                 break;
             default:
@@ -86,7 +86,7 @@ public class InteractionManager : MonoBehaviour
                 break;
         }
 
-        lastType = InteractableBase.InteractableType.None;
+        lastType = InteractableType.None;
 
         IsInInteraction = false;
 
