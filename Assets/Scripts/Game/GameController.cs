@@ -53,10 +53,12 @@ public class GameController : MonoBehaviour
         if (_skipMenu)
         {
             CurtainSingle.Instance.HideImmidiate();
+            UI_ControllerSingle.Instance.ShowViewImmidiate(UI_ViewKey.InteractablesHint);
             var playerSpawnPosition = CheckpointsController.Instance.GetSpawnPosition();
             PlayerController.Instance.Setup(playerSpawnPosition);
             Blackboard.GameStateProperty.Value = GameState.Running;
-            PlayerController.Instance.AllowMovement = true;
+            Blackboard.PlayerStateProperty.Value = PlayerState.Movement;
+            //PlayerController.Instance.AllowMovement = true;
             return;
         }
 
@@ -74,7 +76,7 @@ public class GameController : MonoBehaviour
     private async UniTaskVoid StartFromLastCheckpoint(CancellationToken token)
     {
         //Выключаем управление
-        PlayerController.Instance.AllowMovement = false;
+        Blackboard.PlayerStateProperty.Value = PlayerState.None;
 
         //Закрываем занавес
         await CurtainSingle.Instance.ShowAsync(token);
@@ -83,11 +85,12 @@ public class GameController : MonoBehaviour
 
         //Скрываем главное меню
         UI_ControllerSingle.Instance.HideViewImmidiate(UI_ViewKey.MainMenu);
+        UI_ControllerSingle.Instance.ShowViewImmidiate(UI_ViewKey.InteractablesHint);
 
         //Перемещаем плаера
         var playerSpawnPosition = CheckpointsController.Instance.GetSpawnPosition();
         PlayerController.Instance.Setup(playerSpawnPosition);
-        PlayerController.Instance.AllowMovement = true;
+        Blackboard.PlayerStateProperty.Value = PlayerState.Movement;
 
         //Открываем занавес
         await CurtainSingle.Instance.HideAsync(token);
