@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance { get; private set; }
 
-    public bool AllowMovement { get; set; }
+    public bool AllowMovement { get; set; } = true;
     public PlayerForm Form { get; private set; }
 
     [SerializeField] private InputActionReference _movementActionReference;
