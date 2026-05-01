@@ -29,6 +29,11 @@ public class InteractionComponent : MonoBehaviour
         }).AddTo(this);
     }
 
+    private void OnDestroy()
+    {
+        _interactionActionReference.action.performed -= Interaction_performed;
+    }
+
     private void FixedUpdate()
     {
         Cast();

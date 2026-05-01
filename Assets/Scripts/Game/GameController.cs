@@ -53,6 +53,7 @@ public class GameController : MonoBehaviour
         if (_skipMenu)
         {
             CurtainSingle.Instance.HideImmidiate();
+            UI_ControllerSingle.Instance.ShowViewImmidiate(UI_ViewKey.InteractablesHint);
             var playerSpawnPosition = CheckpointsController.Instance.GetSpawnPosition();
             PlayerController.Instance.Setup(playerSpawnPosition);
             Blackboard.GameStateProperty.Value = GameState.Running;
@@ -83,6 +84,7 @@ public class GameController : MonoBehaviour
 
         //Скрываем главное меню
         UI_ControllerSingle.Instance.HideViewImmidiate(UI_ViewKey.MainMenu);
+        UI_ControllerSingle.Instance.ShowViewImmidiate(UI_ViewKey.InteractablesHint);
 
         //Перемещаем плаера
         var playerSpawnPosition = CheckpointsController.Instance.GetSpawnPosition();
