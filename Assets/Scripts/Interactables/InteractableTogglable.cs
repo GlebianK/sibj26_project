@@ -4,12 +4,25 @@ public class InteractableTogglable : InteractableBase
 {
     [SerializeField] private bool isInteractableOnce;
 
+    [SerializeField] private TogglableBase connectedTogglable;
+
+    [Tooltip("0 - default state")]
+    [SerializeField] private GameObject[] objectStates;
+
     private bool hasBeenInteractedWith;
 
     protected override void Awake()
     {
         base.Awake();
         hasBeenInteractedWith = false;
+
+        for (int i = 0; i < objectStates.Length; i++)
+        {
+            if (i == 0)
+                objectStates[i].SetActive(true);
+            else
+                objectStates[i].SetActive(false);
+        }
     }
 
     override public bool Interact()
@@ -36,7 +49,12 @@ public class InteractableTogglable : InteractableBase
             Debug.Log($"{gameObject.name}: <color=green>changing state here =)</color>");
         
         // TODO: логика смены состояний
-        
+        foreach (GameObject obj in objectStates)
+            obj.SetActive(!obj.activeInHierarchy);
+
+        if (connectedTogglable != null)
+            connectedTogglable.ChangeState();
+
         InteractionManager.Instance.CompleteInteraction();
 
         if (isDebugging)
