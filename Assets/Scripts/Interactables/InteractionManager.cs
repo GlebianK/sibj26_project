@@ -24,7 +24,7 @@ public class InteractionManager : MonoBehaviour
         if (isDebugging)
             Debug.Log("IM: trying to interact...");
 
-        if (Blackboard.SelectedInteractable.Value == null)
+        if (Blackboard.SelectedInteractable.Value == null || IsInInteraction)
             return;
 
         IsInInteraction = true;
@@ -32,6 +32,7 @@ public class InteractionManager : MonoBehaviour
         switch (Blackboard.SelectedInteractable.Value.Type)  // TODO: в кейсах прописать действия игрока (изменение стейтов/анимаций)
         {
             case InteractableType.Evironment:
+                Blackboard.SelectedInteractable.Value.Interact();
                 break;
             case InteractableType.Movable:
                 break;
@@ -55,7 +56,7 @@ public class InteractionManager : MonoBehaviour
     }
 
 
-    public void CancelInteraction(GameObject cancellationInitiator)
+    public void CompleteInteraction()
     {
         if (isDebugging)
             Debug.Log("IM: <color=yellow>cancelling interaction...</color>");
@@ -74,11 +75,9 @@ public class InteractionManager : MonoBehaviour
             case InteractableType.Movable:
                 break;
             case InteractableType.Togglable:
-                Blackboard.SelectedInteractable.Value.Interact();
                 IsInInteraction = false;
                 break;
             case InteractableType.Item:
-                Blackboard.SelectedInteractable.Value.Interact();
                 break;
             default:
                 Debug.Log($"Wrong value for InteractionManager! Value = <color=red>{Blackboard.SelectedInteractable.Value.Type}</color>");

@@ -62,7 +62,7 @@ public class InteractionComponent : MonoBehaviour
         if (!InteractionManager.Instance.IsInInteraction)
             InteractionManager.Instance.TryInteract(this.gameObject);
         else
-            InteractionManager.Instance.CancelInteraction(this.gameObject);
+            InteractionManager.Instance.CompleteInteraction();
     }
 
     private void OnDrawGizmos()

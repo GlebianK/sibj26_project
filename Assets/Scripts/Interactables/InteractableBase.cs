@@ -7,7 +7,7 @@ public class InteractableBase : MonoBehaviour
 
     public InteractableType Type { get { return interactableType; } }
 
-    public bool IsInteractable { get; private set; }
+    public bool IsInteractable { get; protected set; }
 
     virtual protected void Awake()
     {
