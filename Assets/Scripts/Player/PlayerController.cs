@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Text;
 using System.Threading;
+using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -85,6 +86,18 @@ public class PlayerController : MonoBehaviour
         _movementActionReference.action.canceled += Movement_canceled;
         _toggleFormActionReference.action.performed += ToggleForm_performed;
         _jumpActionReference.action.performed += Jump_performed;
+
+        Blackboard.PlayerStateProperty.SkipLatestValueOnSubscribe().Subscribe(value =>
+        {
+            if (value == PlayerState.Movement)
+            {
+                SetAllowInput(true);
+            }
+            else
+            {
+                SetAllowInput(false);
+            }
+        }).AddTo(this);
     }
 
 

@@ -18,9 +18,11 @@ public class DialogueHandler : MonoBehaviour
 
     public void Play(DialogueSequenceConfig dialogue)
     {
+        if (Blackboard.PlayerStateProperty.Value != PlayerState.Movement) return;
+
+        Blackboard.PlayerStateProperty.Value = PlayerState.Dialogue;
         _currentDialogue = dialogue;
         _eventIndex = -1;
-        PlayerController.Instance.AllowMovement = false; //TODO
         ShowNextEventAsync(destroyCancellationToken).Forget();
     }
 
@@ -30,8 +32,7 @@ public class DialogueHandler : MonoBehaviour
         Cancel();
         _currentDialogue = null;
         _activeActor?.HideAsync();
-        //state
-        PlayerController.Instance.AllowMovement = true; //TODO
+        Blackboard.PlayerStateProperty.Value = PlayerState.Movement;
     }
 
     public void StopAndReset()
@@ -40,8 +41,7 @@ public class DialogueHandler : MonoBehaviour
         Cancel();
         _currentDialogue = null;
         _activeActor?.HideImmidiate();
-        //state
-        PlayerController.Instance.AllowMovement = true; //TODO
+        Blackboard.PlayerStateProperty.Value = PlayerState.Movement;
     }
 
     private void Awake()

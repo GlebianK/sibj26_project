@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class PrefsSettingHandlerBase : MonoBehaviour
 {
-    public ReactiveProperty<float> Value { get; private set; }
+    public ReactiveProperty<float> Value { get; private set; } = new();
 
     [SerializeField, Range(0f, 1f)] protected float _value;
     [SerializeField] protected float _defaultValue;
@@ -16,7 +16,7 @@ public abstract class PrefsSettingHandlerBase : MonoBehaviour
     {
         if (_isInitialized) return;
 
-        Value = new();
+        //Value = new();
 
         Value.SkipLatestValueOnSubscribe().Subscribe(value =>
         {
