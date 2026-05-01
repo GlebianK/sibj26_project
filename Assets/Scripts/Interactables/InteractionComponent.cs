@@ -70,10 +70,14 @@ public class InteractionComponent : MonoBehaviour
     {
         Debug.Log("ВЗАИМОДЕЙСТВИЕ Ж!");
 
+        /*
         if (!InteractionManager.Instance.IsInInteraction)
             InteractionManager.Instance.TryInteract(this.gameObject);
         else
             InteractionManager.Instance.CompleteInteraction(); // убрать? оставить вызов в самих объектах?
+        */
+
+        InteractionManager.Instance.TryInteract(this.gameObject);
     }
 
     private void OnDrawGizmos()
