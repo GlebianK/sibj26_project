@@ -13,5 +13,6 @@ public static class Blackboard
     public static ReactiveProperty<GameState> GameStateProperty = new();
 
     //PLAYER
+    public static ReactiveProperty<int> LastCheckpointIndex = new();
     public static ReactiveProperty<InteractableBase> SelectedInteractable = new(); //да, грязно!
 }

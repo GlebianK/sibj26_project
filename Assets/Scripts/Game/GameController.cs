@@ -12,7 +12,10 @@ public class GameController : MonoBehaviour
     public static GameController Instance { get; private set; }
 
     [SerializeField] private bool _initOnStart = true;
+
+    [Header("Debug")]
     [SerializeField] private bool _skipMenu = true;
+    [SerializeField] private int _startCheckpointIndex = 0;
 
     private void Initialize()
     {
@@ -21,8 +24,8 @@ public class GameController : MonoBehaviour
 
         Blackboard.StartGame.Subscribe(_ =>
         {
-            if (Blackboard.GameStateProperty.Value == GameState.Prepared)
-                StartGameAsync(Application.exitCancellationToken).Forget();
+            //if (Blackboard.GameStateProperty.Value == GameState.Prepared)
+            StartFromLastCheckpoint(Application.exitCancellationToken).Forget();
         }).AddTo(this);
 
         Blackboard.EndGame.Subscribe(_ =>
@@ -44,10 +47,16 @@ public class GameController : MonoBehaviour
     {
         //Подготовка и конфигурация сцены, обновление состояний
 
+        CheckpointsController.Instance.ResetAllPoints();
+        Blackboard.LastCheckpointIndex.Value = _startCheckpointIndex;
+
         if (_skipMenu)
         {
             CurtainSingle.Instance.HideImmidiate();
+            var playerSpawnPosition = CheckpointsController.Instance.GetSpawnPosition();
+            PlayerController.Instance.Setup(playerSpawnPosition);
             Blackboard.GameStateProperty.Value = GameState.Running;
+            PlayerController.Instance.AllowMovement = true;
             return;
         }
 
@@ -62,8 +71,11 @@ public class GameController : MonoBehaviour
         DebugMessage("New game prepared");
     }
 
-    private async UniTaskVoid StartGameAsync(CancellationToken token)
+    private async UniTaskVoid StartFromLastCheckpoint(CancellationToken token)
     {
+        //Выключаем управление
+        PlayerController.Instance.AllowMovement = false;
+
         //Закрываем занавес
         await CurtainSingle.Instance.ShowAsync(token);
 
@@ -72,12 +84,15 @@ public class GameController : MonoBehaviour
         //Скрываем главное меню
         UI_ControllerSingle.Instance.HideViewImmidiate(UI_ViewKey.MainMenu);
 
-        //Показываем игровой UI и всякое такое
+        //Перемещаем плаера
+        var playerSpawnPosition = CheckpointsController.Instance.GetSpawnPosition();
+        PlayerController.Instance.Setup(playerSpawnPosition);
+        PlayerController.Instance.AllowMovement = true;
 
         //Открываем занавес
         await CurtainSingle.Instance.HideAsync(token);
 
-        //Отдаем игроку управление
+        //Включаем управление
 
         Blackboard.GameStateProperty.Value = GameState.Running;
 
