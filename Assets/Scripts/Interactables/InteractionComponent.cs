@@ -62,7 +62,7 @@ public class InteractionComponent : MonoBehaviour
         if (!InteractionManager.Instance.IsInInteraction)
             InteractionManager.Instance.TryInteract(this.gameObject);
         else
-            InteractionManager.Instance.CompleteInteraction();
+            InteractionManager.Instance.CompleteInteraction(); // убрать? оставить вызов в самих объектах?
     }
 
     private void OnDrawGizmos()

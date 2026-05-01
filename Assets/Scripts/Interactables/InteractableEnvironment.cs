@@ -1,6 +1,4 @@
 using DG.Tweening;
-using TMPro;
-using UnityEditor.Compilation;
 using UnityEngine;
 
 public class InteractableEnvironment : InteractableBase
