@@ -5,6 +5,7 @@ public class InteractionManager : MonoBehaviour
     public static InteractionManager Instance { get; private set; }
 
     [SerializeField] private bool isDebugging;
+    [SerializeField] private InteractionComponent playerIC;
 
     public bool IsInInteraction { get; private set; }
 
@@ -48,7 +49,8 @@ public class InteractionManager : MonoBehaviour
                 return;
             case InteractableType.Item:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
-                interactionResult = Blackboard.SelectedInteractable.Value.Interact();
+                interactionResult = Blackboard.SelectedInteractable.Value.Interact(playerIC.ItemHoldingPoint);
+                PrintDebug(interactionResult);
                 return;
             default:
                 Debug.Log($"Wrong value for InteractionManager! Value = <color=red>{Blackboard.SelectedInteractable.Value.Type}</color>");

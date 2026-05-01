@@ -8,13 +8,19 @@ using UniRx;
 /// </summary>
 public class InteractionComponent : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private InputActionReference _interactionActionReference;
+    [SerializeField] private GameObject itemHoldingPoint;
+
+    [Space, Header("Spere cast info")]
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private float _castRadius = .5f;
     [SerializeField] private Vector3 _castOffset;
     [SerializeField] private bool _drawDebug;
 
     private Collider[] _results = new Collider[1];
+
+    public GameObject ItemHoldingPoint { get { return itemHoldingPoint; } }
 
     private void Awake()
     {

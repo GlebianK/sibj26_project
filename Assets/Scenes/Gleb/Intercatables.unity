@@ -301,6 +301,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &302637905
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 302637906}
+  m_Layer: 0
+  m_Name: Item Holding Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &302637906
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302637905}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.67, y: 1.16, z: 0.02}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 736713545546483188}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &403285637
 GameObject:
   m_ObjectHideFlags: 0
@@ -809,7 +840,7 @@ GameObject:
   - component: {fileID: 893837450}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1160,6 +1191,7 @@ GameObject:
   - component: {fileID: 1520047909}
   - component: {fileID: 1520047908}
   - component: {fileID: 1520047907}
+  - component: {fileID: 1520047912}
   - component: {fileID: 1520047911}
   m_Layer: 6
   m_Name: Cube_I
@@ -1183,7 +1215,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1255,7 +1287,7 @@ Transform:
   m_GameObject: {fileID: 1520047905}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.29, y: 0.51, z: 3.71}
+  m_LocalPosition: {x: -5.29, y: 0.5, z: 3.71}
   m_LocalScale: {x: 0.8, y: 0.75, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1275,6 +1307,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableItem
   isDebugging: 1
   interactableType: 2
+  rb: {fileID: 1520047912}
+  itemCollider: {fileID: 1520047907}
+--- !u!54 &1520047912
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520047905}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1
 --- !u!1 &1524200679
 GameObject:
   m_ObjectHideFlags: 0
@@ -1689,6 +1750,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1919720437134678720}
+  - {fileID: 302637906}
   m_Father: {fileID: 612233167020229569}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &787010588708987095
@@ -2251,6 +2313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractionComponent
   _interactionActionReference: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  itemHoldingPoint: {fileID: 302637905}
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -2270,6 +2333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractionManager
   isDebugging: 1
+  playerIC: {fileID: 5379873032073986034}
 --- !u!4 &5536742172446655005
 Transform:
   m_ObjectHideFlags: 0

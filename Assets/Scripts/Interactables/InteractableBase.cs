@@ -24,6 +24,17 @@ public class InteractableBase : MonoBehaviour
 
         return true;
     }
+
+    virtual public bool Interact(GameObject newParent)
+    {
+        if (!IsInteractable)
+            return false;
+
+        if (isDebugging)
+            Debug.Log("This is the <color=yellow>base</color> Interact method!");
+
+        return true;
+    }
 }
 
 [System.Serializable]
