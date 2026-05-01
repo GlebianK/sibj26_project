@@ -4,7 +4,7 @@ public class InteractableMovable : InteractableBase
 {
     private bool isBeingInteractedWith;
 
-    protected void Awake()
+    override protected void Awake()
     {
         base.Awake();
         isBeingInteractedWith = false;
