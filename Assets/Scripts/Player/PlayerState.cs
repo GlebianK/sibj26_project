@@ -5,5 +5,5 @@ public enum PlayerState
     Pulling = 2,
     Carrying = 3,
     Dialogue = 4,
-    Curscene = 5,
+    Cutscene = 5,
 }
