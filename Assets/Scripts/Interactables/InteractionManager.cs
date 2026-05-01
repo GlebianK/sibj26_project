@@ -29,23 +29,26 @@ public class InteractionManager : MonoBehaviour
 
         IsInInteraction = true;
 
+        bool interactionResult;
+
         switch (Blackboard.SelectedInteractable.Value.Type)  // TODO: в кейсах прописать действия игрока (изменение стейтов/анимаций)
         {
-            case InteractableType.Evironment:
+            case InteractableType.Evironment:       // СДЕЛАТЬ АСИНК И ЖДАТЬ, ПОКА IsInInteraction НЕ СТАНЕТ FALSE?
                 lastType = Blackboard.SelectedInteractable.Value.Type;
-                Blackboard.SelectedInteractable.Value.Interact();
+                interactionResult = Blackboard.SelectedInteractable.Value.Interact();
+                PrintDebug(interactionResult);
                 return;
             case InteractableType.Movable:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
                 return;
             case InteractableType.Togglable:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
-                Blackboard.SelectedInteractable.Value.Interact();
-                IsInInteraction = false;
+                interactionResult = Blackboard.SelectedInteractable.Value.Interact();
+                PrintDebug(interactionResult);
                 return;
             case InteractableType.Item:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
-                Blackboard.SelectedInteractable.Value.Interact();
+                interactionResult = Blackboard.SelectedInteractable.Value.Interact();
                 return;
             default:
                 Debug.Log($"Wrong value for InteractionManager! Value = <color=red>{Blackboard.SelectedInteractable.Value.Type}</color>");
@@ -55,6 +58,17 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
+    private void PrintDebug(bool res)
+    {
+        if (!isDebugging)
+            return;
+
+        string colorRed = "red";
+        string colorGreen = "green";
+
+        string resColor = res ? colorGreen : colorRed;
+        Debug.Log($"<color={resColor}>{res}</color>");
+    }
 
     public void CompleteInteraction()
     {
