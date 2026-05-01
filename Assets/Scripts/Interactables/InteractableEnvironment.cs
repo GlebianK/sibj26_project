@@ -59,6 +59,9 @@ public class InteractableEnvironment : InteractableBase
         IsMoving = false;
         IsInteractable = true;
         InteractionManager.Instance.CompleteInteraction();
+
+        if (isDebugging)
+            Debug.Log($"Interaction with type {Blackboard.SelectedInteractable.Value.Type}: <color=green>success!</color>");
     }
 }
 

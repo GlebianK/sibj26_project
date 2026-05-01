@@ -34,7 +34,12 @@ public class InteractableTogglable : InteractableBase
     {
         if (isDebugging)
             Debug.Log($"{gameObject.name}: <color=green>changing state here =)</color>");
-        InteractionManager.Instance.CompleteInteraction();
+        
         // TODO: логика смены состояний
+        
+        InteractionManager.Instance.CompleteInteraction();
+
+        if (isDebugging)
+            Debug.Log($"Interaction with type {Blackboard.SelectedInteractable.Value.Type}: <color=green>success!</color>");
     }
 }

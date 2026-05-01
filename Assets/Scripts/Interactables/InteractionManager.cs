@@ -32,27 +32,27 @@ public class InteractionManager : MonoBehaviour
         switch (Blackboard.SelectedInteractable.Value.Type)  // TODO: в кейсах прописать действия игрока (изменение стейтов/анимаций)
         {
             case InteractableType.Evironment:
+                lastType = Blackboard.SelectedInteractable.Value.Type;
                 Blackboard.SelectedInteractable.Value.Interact();
-                break;
+                return;
             case InteractableType.Movable:
-                break;
+                lastType = Blackboard.SelectedInteractable.Value.Type;
+                return;
             case InteractableType.Togglable:
+                lastType = Blackboard.SelectedInteractable.Value.Type;
                 Blackboard.SelectedInteractable.Value.Interact();
                 IsInInteraction = false;
-                break;
+                return;
             case InteractableType.Item:
+                lastType = Blackboard.SelectedInteractable.Value.Type;
                 Blackboard.SelectedInteractable.Value.Interact();
-                break;
+                return;
             default:
                 Debug.Log($"Wrong value for InteractionManager! Value = <color=red>{Blackboard.SelectedInteractable.Value.Type}</color>");
+                lastType = InteractableType.None;
                 IsInInteraction = false;
-                break;
+                return;
         }
-
-        lastType = Blackboard.SelectedInteractable.Value.Type;
-
-        if (isDebugging)
-            Debug.Log($"Interaction with type <color=green>{Blackboard.SelectedInteractable.Value.Type}</color>: success!");
     }
 
 
