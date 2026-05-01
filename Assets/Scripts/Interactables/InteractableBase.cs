@@ -14,18 +14,21 @@ public class InteractableBase : MonoBehaviour
         IsInteractable = true;
     }
 
-    virtual public void Interact()
+    virtual public bool Interact()
     {
         if (!IsInteractable)
-            return;
+            return false;
 
         if (isDebugging)
             Debug.Log("This is the <color=yellow>base</color> Interact method!");
+
+        return true;
     }
 
     [System.Serializable]
     public enum InteractableType
     {
+        None,
         Evironment, // лестницы/уступы/вентил€ции, словом, персонаж подстраиваетс€ под объект
         Item,   // предметы: ключ-карты, бутылки?, проч.
         Movable,    // пресонаж подстраиваетс€ под объект, но объект двигаетс€ (€щики)

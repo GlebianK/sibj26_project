@@ -10,7 +10,7 @@ public class InteractableItem : InteractableBase
         IsBeingCarried = false;
     }
 
-    override public void Interact()
+    override public bool Interact()
     {
         base.Interact();
         
@@ -18,5 +18,7 @@ public class InteractableItem : InteractableBase
             Debug.Log($"This is the <color=yellow>InteractableItem's</color> Interact method! GO: {gameObject.name}");
 
         IsBeingCarried = !IsBeingCarried;
+
+        return true;
     }
 }

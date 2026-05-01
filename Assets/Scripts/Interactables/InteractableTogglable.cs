@@ -12,16 +12,13 @@ public class InteractableTogglable : InteractableBase
         hasBeenInteractedWith = false;
     }
 
-    override public void Interact()
+    override public bool Interact()
     {
         if (isDebugging)
             Debug.Log("Toggable: <color=yellow>Trying to interact... </color>");
 
-        if (!IsInteractable)
-            return;
-        
         if (isInteractableOnce && hasBeenInteractedWith)
-            return;
+            return false;
 
         base.Interact();
         if (isDebugging)
@@ -29,10 +26,14 @@ public class InteractableTogglable : InteractableBase
 
         hasBeenInteractedWith = true;
         ChangeState();
+
+        return true;
     }   
     
     private void ChangeState()
     {
         Debug.Log($"{gameObject.name}: <color=green>changing state here =)</color>");
+
+        // TODO: логика смены состояний
     }
 }

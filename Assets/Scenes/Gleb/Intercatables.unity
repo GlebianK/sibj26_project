@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 92724250}
   - component: {fileID: 92724249}
   - component: {fileID: 92724248}
-  - component: {fileID: 92724252}
   m_Layer: 6
   m_Name: Cube_E
   m_TagString: Interactable
@@ -226,26 +225,12 @@ Transform:
   m_GameObject: {fileID: 92724247}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.54, y: 0.51, z: 3.71}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 875368426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &92724252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 92724247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de62562b05771004f89b5e08b09e83f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractableEnvironment
-  isDebugging: 1
-  interactableType: 0
 --- !u!1 &165527241
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,7 +449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableEnvironment
   isDebugging: 1
-  interactableType: 2
+  interactableType: 3
 --- !u!1 &745227325
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,6 +577,81 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &875368423
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 875368426}
+  - component: {fileID: 875368425}
+  - component: {fileID: 875368424}
+  m_Layer: 6
+  m_Name: Elevator
+  m_TagString: Interactable
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &875368424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875368423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de62562b05771004f89b5e08b09e83f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableEnvironment
+  isDebugging: 1
+  interactableType: 1
+--- !u!54 &875368425
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875368423}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!4 &875368426
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875368423}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.54, y: 0.51, z: 3.71}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 92724251}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &893837449
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,7 +891,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableToggable
   isDebugging: 1
-  interactableType: 3
+  interactableType: 4
   isInteractableOnce: 0
 --- !u!1 &1520047905
 GameObject:
@@ -959,7 +1019,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableItem
   isDebugging: 1
-  interactableType: 1
+  interactableType: 2
 --- !u!114 &198581659629498434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1699,7 +1759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c8d8ccae66460428f30e802c544f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractionManager
-  isDebugging: 0
+  isDebugging: 1
 --- !u!4 &5536742172446655005
 Transform:
   m_ObjectHideFlags: 0
@@ -6911,7 +6971,7 @@ SceneRoots:
   - {fileID: 745227327}
   - {fileID: 4614025105631165293}
   - {fileID: 893837453}
-  - {fileID: 92724251}
+  - {fileID: 875368426}
   - {fileID: 470856639}
   - {fileID: 1155026589}
   - {fileID: 1520047910}
