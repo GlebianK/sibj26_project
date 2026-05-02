@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class InteractableTogglable : InteractableBase
 {
-    [SerializeField] private bool isInteractableOnce;
+    [SerializeField] protected bool isInteractableOnce;
 
-    [SerializeField] private TogglableBase connectedTogglable;
+    [SerializeField] protected TogglableBase connectedTogglable;
 
     [Tooltip("0 - default state")]
-    [SerializeField] private GameObject[] objectStates;
+    [SerializeField] protected GameObject[] objectStates;
 
-    private bool hasBeenInteractedWith;
+    protected bool hasBeenInteractedWith;
 
     protected override void Awake()
     {
@@ -33,22 +33,23 @@ public class InteractableTogglable : InteractableBase
         if (isInteractableOnce && hasBeenInteractedWith)
             return false;
 
+        if (connectedTogglable.IsChangingState)
+            return false;
+
         base.Interact();
         if (isDebugging)
             Debug.Log("This is the <color=yellow>InteractableTogglable's</color> Interact method ;)");
 
-        hasBeenInteractedWith = true;
         ChangeState();
 
         return true;
-    }   
-    
-    private void ChangeState()
+    }
+
+    virtual protected void ChangeState()
     {
         if (isDebugging)
             Debug.Log($"{gameObject.name}: <color=green>changing state here =)</color>");
         
-        // TODO: логика смены состояний
         foreach (GameObject obj in objectStates)
             obj.SetActive(!obj.activeInHierarchy);
 

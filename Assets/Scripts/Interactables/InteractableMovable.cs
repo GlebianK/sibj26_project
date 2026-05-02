@@ -10,10 +10,11 @@ public class InteractableMovable : InteractableBase
         isBeingInteractedWith = false;
     }
 
-    override public bool Interact()
+    override public bool Interact(GameObject newParent)
     {
         if (isBeingInteractedWith)
         {
+            transform.parent = null;
             InteractionManager.Instance.CompleteInteraction();
             return false;
         }
@@ -23,6 +24,7 @@ public class InteractableMovable : InteractableBase
             Debug.Log($"This is the <color=yellow>InteractableEnvironment's</color> Interact method! GO: {gameObject.name}");
 
         isBeingInteractedWith = true;
+        transform.SetParent(newParent.transform);
         
         return true;
     }
