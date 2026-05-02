@@ -38,12 +38,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _jumpCooldown = .3f;
     [SerializeField] private bool _debug;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource _transformationSFX;
+    [SerializeField] private AudioSource _humanJumpSFX;
+    [SerializeField] private AudioSource _BearJumpSFX;
+    [SerializeField] private AudioSource _humanStepsSFX;
+    [SerializeField] private AudioSource _bearStepsSFX;
+
     private bool _allowInput = true;
     private Vector3 _movementDirection;
     private Vector3 _velocity;
     private float _jumpTimer;
     private bool _isJump;
-    private bool _isClimbing;
+    //private bool _isClimbing;
     private Quaternion _targetRotation;
     private StringBuilder _debugText = new();
     private CancellationTokenSource _cts;
@@ -64,6 +71,7 @@ public class PlayerController : MonoBehaviour
         Form = form;
         _cts = new();
         ChangeFormAsync(form, _cts.Token).Forget();
+        _transformationSFX.Play();
     }
 
     public void ChangeFormImmidiate(PlayerForm form)
@@ -83,7 +91,7 @@ public class PlayerController : MonoBehaviour
         _characterController.enabled = true;
         //_bearAnimator.applyRootMotion = false;
         SetAllowInput(true);
-        _isClimbing = false;
+        //_isClimbing = false;
     }
 
     private void Awake()
@@ -135,13 +143,24 @@ public class PlayerController : MonoBehaviour
             _jumpTimer -= Time.deltaTime;
         }
 
+        if (!_isJump && !_characterController.isGrounded)
+        {
+            _isJump = true;
+        }
+
         var isMoving = _movementDirection.sqrMagnitude > 0f;
         var isJumping = !_characterController.isGrounded;
+        var playStepSFX = _isJump && !isJumping;
 
         if (_humanAnimator.gameObject.activeInHierarchy)
         {
             _humanAnimator.SetBool("IsMoving", isMoving);
             _humanAnimator.SetBool("IsJumping", isJumping);
+
+            if (playStepSFX)
+            {
+                _humanStepsSFX.Play();
+            }
         }
 
         if (_bearAnimator.gameObject.activeInHierarchy)
@@ -149,13 +168,23 @@ public class PlayerController : MonoBehaviour
             _bearAnimator.SetBool("IsMoving", isMoving);
             _bearAnimator.SetBool("IsJumping", isJumping);
 
-            if (_isClimbing)
+            if (playStepSFX)
             {
-                //Debug.Log(_bearAnimator.deltaPosition);
-                //_characterController.Move(_bearAnimator.deltaPosition);
-                //_bearAnimator.gameObject.transform.localPosition = Vector3.zero;
-                //_bearAnimator.gameObject.transform.localRotation = Quaternion.identity;
+                _bearStepsSFX.Play();
             }
+
+            //if (_isClimbing)
+            //{
+            //    Debug.Log(_bearAnimator.deltaPosition);
+            //    _characterController.Move(_bearAnimator.deltaPosition);
+            //    _bearAnimator.gameObject.transform.localPosition = Vector3.zero;
+            //    _bearAnimator.gameObject.transform.localRotation = Quaternion.identity;
+            //}
+        }
+
+        if (playStepSFX)
+        {
+            _isJump = false;
         }
     }
 
@@ -221,38 +250,48 @@ public class PlayerController : MonoBehaviour
             && _jumpTimer <= 0f)
         //&& Form == PlayerForm.Human)
         {
-            //var jumpForce = Form == PlayerForm.Human ? _humanConfig.JumpForce : _bearConfig.JumpForce;
-            //_velocity.y = jumpForce;
-            //_jumpTimer = _jumpCooldown;
+            var jumpForce = Form == PlayerForm.Human ? _humanConfig.JumpForce : _bearConfig.JumpForce;
+            _velocity.y = jumpForce;
+            _jumpTimer = _jumpCooldown;
 
             if (Form == PlayerForm.Human)
             {
-                var jumpForce = Form == PlayerForm.Human ? _humanConfig.JumpForce : _bearConfig.JumpForce;
-                _velocity.y = jumpForce;
-                _jumpTimer = _jumpCooldown;
+                _humanJumpSFX.Play();
             }
-            else if (Form == PlayerForm.Bear)
+            else
             {
-                var position = transform.position + _views.forward;
-                var results = Physics.OverlapSphere(position, .5f, _climbingLayerMask);
-                if (results.Length > 0)
-                {
-                    if (results[0].attachedRigidbody.gameObject.TryGetComponent<ClimbingObject>(out var climbingObject))
-                    {
-                        //_bearAnimator.applyRootMotion = true;
-                        _climbingObject = climbingObject;
-                        _isClimbing = true;
-                        SetAllowInput(false);
-                        _bearAnimator.SetTrigger("Climb");
-                    }
-                }
-                else
-                {
-                    var jumpForce = Form == PlayerForm.Human ? _humanConfig.JumpForce : _bearConfig.JumpForce;
-                    _velocity.y = jumpForce;
-                    _jumpTimer = _jumpCooldown;
-                }
+                _BearJumpSFX.Play();
             }
+
+
+            //if (Form == PlayerForm.Human)
+            //{
+            //    var jumpForce = Form == PlayerForm.Human ? _humanConfig.JumpForce : _bearConfig.JumpForce;
+            //    _velocity.y = jumpForce;
+            //    _jumpTimer = _jumpCooldown;
+            //}
+            //else if (Form == PlayerForm.Bear)
+            //{
+            //    var position = transform.position + _views.forward;
+            //    var results = Physics.OverlapSphere(position, .5f, _climbingLayerMask);
+            //    if (results.Length > 0)
+            //    {
+            //        if (results[0].attachedRigidbody.gameObject.TryGetComponent<ClimbingObject>(out var climbingObject))
+            //        {
+            //            //_bearAnimator.applyRootMotion = true;
+            //            _climbingObject = climbingObject;
+            //            _isClimbing = true;
+            //            SetAllowInput(false);
+            //            _bearAnimator.SetTrigger("Climb");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        var jumpForce = Form == PlayerForm.Human ? _humanConfig.JumpForce : _bearConfig.JumpForce;
+            //        _velocity.y = jumpForce;
+            //        _jumpTimer = _jumpCooldown;
+            //    }
+            //}
         }
     }
 
