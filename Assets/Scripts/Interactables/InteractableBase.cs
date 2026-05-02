@@ -4,14 +4,23 @@ public class InteractableBase : MonoBehaviour
 {
     [SerializeField] protected bool isDebugging;
     [SerializeField] protected InteractableType interactableType;
+    [SerializeField] protected PlayerForm allowedForm;
+
+    protected bool isInteractableByHuman;
 
     public InteractableType Type { get { return interactableType; } }
+    public bool IsInteractableByHuman { get { return isInteractableByHuman; } }
 
     public bool IsInteractable { get; protected set; }
 
     virtual protected void Awake()
     {
         IsInteractable = true;
+
+        if (allowedForm == PlayerForm.Human)
+            isInteractableByHuman = true;
+        else
+            isInteractableByHuman = false;
     }
 
     virtual public bool Interact()

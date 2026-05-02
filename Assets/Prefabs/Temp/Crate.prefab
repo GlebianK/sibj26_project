@@ -127,3 +127,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableEnvironment
   isDebugging: 1
   interactableType: 3
+  allowedForm: 2

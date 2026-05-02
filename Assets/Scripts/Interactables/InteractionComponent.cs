@@ -75,7 +75,18 @@ public class InteractionComponent : MonoBehaviour
             if (targetObject.TryGetComponent<InteractableBase>(out var interactable)
                 && Blackboard.SelectedInteractable.Value != interactable)
             {
-                Blackboard.SelectedInteractable.Value = interactable;
+                /*
+                if (_drawDebug)
+                    Debug.Log($"Human form required: {interactable.IsInteractableByHuman}, cur.form: {PlayerController.Instance.Form}");
+                */
+
+                if ((interactable.IsInteractableByHuman && PlayerController.Instance.Form == PlayerForm.Human) ||
+                    (!interactable.IsInteractableByHuman && PlayerController.Instance.Form == PlayerForm.Bear))
+                {
+                    Blackboard.SelectedInteractable.Value = interactable;
+                }
+                else
+                    Blackboard.SelectedInteractable.Value = null;
             }
         }
     }
@@ -96,7 +107,18 @@ public class InteractionComponent : MonoBehaviour
             if (targetObject.TryGetComponent<InteractableBase>(out var interactable)
                 && Blackboard.SelectedInteractable.Value != interactable)
             {
-                Blackboard.SelectedInteractable.Value = interactable;
+                /*
+                if (_drawDebug)
+                    Debug.Log($"Human form required: {interactable.IsInteractableByHuman}, cur.form: {PlayerController.Instance.Form}");
+                */
+
+                if ((interactable.IsInteractableByHuman && PlayerController.Instance.Form == PlayerForm.Human) ||
+                    (!interactable.IsInteractableByHuman && PlayerController.Instance.Form == PlayerForm.Bear))
+                {
+                    Blackboard.SelectedInteractable.Value = interactable;
+                }
+                else
+                    Blackboard.SelectedInteractable.Value = null;
             }
         }
     }

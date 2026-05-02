@@ -424,6 +424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableEnvironment
   isDebugging: 1
   interactableType: 1
+  allowedForm: 1
   platformMovable: {fileID: 2226611405461125687}
   bottomPoint: {fileID: 4973129322420510337}
   topPoint: {fileID: 9092209618709519659}
