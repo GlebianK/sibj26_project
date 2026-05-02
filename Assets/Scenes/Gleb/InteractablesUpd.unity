@@ -9862,6 +9862,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableEnvironment
   isDebugging: 1
   interactableType: 1
+  allowedForm: 1
   platformMovable: {fileID: 2226611405342401669}
   bottomPoint: {fileID: 4973129322000252979}
   topPoint: {fileID: 9092209619161416601}
@@ -10049,9 +10050,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableItem
   isDebugging: 1
   interactableType: 2
+  allowedForm: 1
   rb: {fileID: 7297680580280493773}
-  itemCollider: {fileID: 4587515191495214961}
-  throwForce: 150
 --- !u!114 &3437256007791367063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10573,6 +10573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableTogglableSecured
   isDebugging: 1
   interactableType: 4
+  allowedForm: 1
   isInteractableOnce: 0
   connectedTogglable: {fileID: 4587418026153613490}
   objectStates:
@@ -10671,6 +10672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableToggable
   isDebugging: 1
   interactableType: 4
+  allowedForm: 1
   isInteractableOnce: 0
   connectedTogglable: {fileID: 3437256007791367063}
   objectStates:
@@ -10934,6 +10936,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableEnvironment
   isDebugging: 1
   interactableType: 3
+  allowedForm: 2
 --- !u!1 &8294766587600095479
 GameObject:
   m_ObjectHideFlags: 0

@@ -429,6 +429,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableTogglableSecured
   isDebugging: 1
   interactableType: 4
+  allowedForm: 1
   isInteractableOnce: 0
   connectedTogglable: {fileID: 1846109958644520208}
   objectStates:

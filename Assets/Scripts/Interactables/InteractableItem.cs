@@ -3,8 +3,6 @@ using UnityEngine;
 public class InteractableItem : InteractableBase
 {
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private Collider itemCollider;
-    [SerializeField] private float throwForce;
 
     public bool IsBeingCarried { get; private set; }
 

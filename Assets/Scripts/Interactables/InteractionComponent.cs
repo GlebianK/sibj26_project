@@ -54,12 +54,15 @@ public class InteractionComponent : MonoBehaviour
 
     private void FixedUpdate()
     {
-        CastCapsule();
-        CastSphere();
+        if (PlayerController.Instance.Form == PlayerForm.Human)
+            CastCapsule();
+        else
+            CastSphere();
     }
 
     private void CastCapsule()
     {
+        hitCountsSphere = 0;
         hitCountsCapsule = Physics.OverlapCapsuleNonAlloc(transform.position + _castOffsetTop, transform.position + _castOffsetBottom,
             _castRadius, _results, _layerMaskZ);
 
@@ -75,13 +78,25 @@ public class InteractionComponent : MonoBehaviour
             if (targetObject.TryGetComponent<InteractableBase>(out var interactable)
                 && Blackboard.SelectedInteractable.Value != interactable)
             {
-                Blackboard.SelectedInteractable.Value = interactable;
+                /*
+                if (_drawDebug)
+                    Debug.Log($"Human form required: {interactable.IsInteractableByHuman}, cur.form: {PlayerController.Instance.Form}");
+                */
+
+                if ((interactable.IsInteractableByHuman && PlayerController.Instance.Form == PlayerForm.Human) ||
+                    (!interactable.IsInteractableByHuman && PlayerController.Instance.Form == PlayerForm.Bear))
+                {
+                    Blackboard.SelectedInteractable.Value = interactable;
+                }
+                else
+                    Blackboard.SelectedInteractable.Value = null;
             }
         }
     }
 
     private void CastSphere()
     {
+        hitCountsCapsule = 0;
         hitCountsSphere = Physics.OverlapSphereNonAlloc(transform.position + _castOffsetForward, _castRadius, _results, _layerMaskX);
 
         if (hitCountsCapsule == 0 && hitCountsSphere == 0)
@@ -96,7 +111,18 @@ public class InteractionComponent : MonoBehaviour
             if (targetObject.TryGetComponent<InteractableBase>(out var interactable)
                 && Blackboard.SelectedInteractable.Value != interactable)
             {
-                Blackboard.SelectedInteractable.Value = interactable;
+                /*
+                if (_drawDebug)
+                    Debug.Log($"Human form required: {interactable.IsInteractableByHuman}, cur.form: {PlayerController.Instance.Form}");
+                */
+
+                if ((interactable.IsInteractableByHuman && PlayerController.Instance.Form == PlayerForm.Human) ||
+                    (!interactable.IsInteractableByHuman && PlayerController.Instance.Form == PlayerForm.Bear))
+                {
+                    Blackboard.SelectedInteractable.Value = interactable;
+                }
+                else
+                    Blackboard.SelectedInteractable.Value = null;
             }
         }
     }

@@ -155,6 +155,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableItem
   isDebugging: 1
   interactableType: 2
+  allowedForm: 1
   rb: {fileID: 7297680580555997531}
-  itemCollider: {fileID: 4587515190734217447}
-  throwForce: 0
