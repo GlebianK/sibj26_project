@@ -1150,6 +1150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameDebugTool
   _startGameActionReference: {fileID: -6500145282993216723, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   _endGameActionReference: {fileID: 2553107908949067407, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  _punchTestActionReference: {fileID: 1354235025240593881, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!1 &3764925146627676252
 GameObject:
   m_ObjectHideFlags: 0

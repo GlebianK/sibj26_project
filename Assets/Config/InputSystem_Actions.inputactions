@@ -1053,6 +1053,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PunchTest",
+                    "type": "Button",
+                    "id": "6f903f98-b716-4f5a-9784-c69cd90a0ad7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1075,6 +1084,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "EndGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a8bd58ec-fbd6-427b-af12-c32277ce9870",
+                    "path": "<Keyboard>/f3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PunchTest",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
