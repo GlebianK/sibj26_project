@@ -12,9 +12,9 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance { get; private set; }
 
     public bool AllowMovement { get; set; } = true;
-    public bool AllowInput { get => _allowInput; set => SetAllowInput(value); }
+    //public bool AllowInput { get => _allowInput; set => SetAllowInput(value); }
 
-    public PlayerForm Form { get; private set; }
+    public PlayerForm Form { get; private set; } = PlayerForm.Human;
 
     [SerializeField] private InputActionReference _movementActionReference;
     [SerializeField] private InputActionReference _jumpActionReference;
@@ -24,7 +24,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerConfig _bearConfig;
     [SerializeField] private PlayerView _humanView;
     [SerializeField] private PlayerView _bearView;
+    [SerializeField] private Animator _humanAnimator;
+    [SerializeField] private Animator _bearAnimator;
     [SerializeField] private Transform _views;
+    [SerializeField] private LayerMask _climbingLayerMask;
     [SerializeField] private ParticleSystem _transformationFX;
     [SerializeField] private bool _allowZMovement = false;
     [SerializeField] private float _movementSpeed = 1.0f;
@@ -32,7 +35,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _groundedGravity = -3f;
     [SerializeField] private float _gravity = -9.8f;
     [SerializeField] private float _gravityMultiplier = 3f;
-    [SerializeField] private float _jumpForce;
     [SerializeField] private float _jumpCooldown = .3f;
     [SerializeField] private bool _debug;
 
@@ -40,9 +42,12 @@ public class PlayerController : MonoBehaviour
     private Vector3 _movementDirection;
     private Vector3 _velocity;
     private float _jumpTimer;
+    private bool _isJump;
+    private bool _isClimbing;
     private Quaternion _targetRotation;
     private StringBuilder _debugText = new();
     private CancellationTokenSource _cts;
+    private ClimbingObject _climbingObject;
 
     public void Setup(Vector3 position)
     {
@@ -69,6 +74,16 @@ public class PlayerController : MonoBehaviour
         var targetView = Form == PlayerForm.Human ? _humanView : _bearView;
         currentView.gameObject.SetActive(false);
         targetView.gameObject.SetActive(true);
+    }
+
+    public void EndClimb()
+    {
+        _characterController.enabled = false;
+        transform.position = _climbingObject.Target.position;
+        _characterController.enabled = true;
+        //_bearAnimator.applyRootMotion = false;
+        SetAllowInput(true);
+        _isClimbing = false;
     }
 
     private void Awake()
@@ -118,6 +133,29 @@ public class PlayerController : MonoBehaviour
         if (_jumpTimer >= 0f)
         {
             _jumpTimer -= Time.deltaTime;
+        }
+
+        var isMoving = _movementDirection.sqrMagnitude > 0f;
+        var isJumping = !_characterController.isGrounded;
+
+        if (_humanAnimator.gameObject.activeInHierarchy)
+        {
+            _humanAnimator.SetBool("IsMoving", isMoving);
+            _humanAnimator.SetBool("IsJumping", isJumping);
+        }
+
+        if (_bearAnimator.gameObject.activeInHierarchy)
+        {
+            _bearAnimator.SetBool("IsMoving", isMoving);
+            _bearAnimator.SetBool("IsJumping", isJumping);
+
+            if (_isClimbing)
+            {
+                //Debug.Log(_bearAnimator.deltaPosition);
+                //_characterController.Move(_bearAnimator.deltaPosition);
+                //_bearAnimator.gameObject.transform.localPosition = Vector3.zero;
+                //_bearAnimator.gameObject.transform.localRotation = Quaternion.identity;
+            }
         }
     }
 
@@ -180,11 +218,41 @@ public class PlayerController : MonoBehaviour
     {
         if (_allowInput
             && _characterController.isGrounded
-            && _jumpTimer <= 0f
-            && Form == PlayerForm.Human)
+            && _jumpTimer <= 0f)
+        //&& Form == PlayerForm.Human)
         {
-            _velocity.y = _jumpForce;
-            _jumpTimer = _jumpCooldown;
+            //var jumpForce = Form == PlayerForm.Human ? _humanConfig.JumpForce : _bearConfig.JumpForce;
+            //_velocity.y = jumpForce;
+            //_jumpTimer = _jumpCooldown;
+
+            if (Form == PlayerForm.Human)
+            {
+                var jumpForce = Form == PlayerForm.Human ? _humanConfig.JumpForce : _bearConfig.JumpForce;
+                _velocity.y = jumpForce;
+                _jumpTimer = _jumpCooldown;
+            }
+            else if (Form == PlayerForm.Bear)
+            {
+                var position = transform.position + _views.forward;
+                var results = Physics.OverlapSphere(position, .5f, _climbingLayerMask);
+                if (results.Length > 0)
+                {
+                    if (results[0].attachedRigidbody.gameObject.TryGetComponent<ClimbingObject>(out var climbingObject))
+                    {
+                        //_bearAnimator.applyRootMotion = true;
+                        _climbingObject = climbingObject;
+                        _isClimbing = true;
+                        SetAllowInput(false);
+                        _bearAnimator.SetTrigger("Climb");
+                    }
+                }
+                else
+                {
+                    var jumpForce = Form == PlayerForm.Human ? _humanConfig.JumpForce : _bearConfig.JumpForce;
+                    _velocity.y = jumpForce;
+                    _jumpTimer = _jumpCooldown;
+                }
+            }
         }
     }
 
@@ -209,6 +277,7 @@ public class PlayerController : MonoBehaviour
 
     private void ToggleForm_performed(InputAction.CallbackContext obj)
     {
+        if (!_allowInput) return;
         var nextForm = Form == PlayerForm.Human ? PlayerForm.Bear : PlayerForm.Human;
         ChangeForm(nextForm);
     }

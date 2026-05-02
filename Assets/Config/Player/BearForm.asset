@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e31dbfb13f606f945b3cfb609067969b, type: 3}
   m_Name: BearForm
   m_EditorClassIdentifier: Assembly-CSharp::PlayerConfig
-  <Speed>k__BackingField: 3.5
+  <Speed>k__BackingField: 1.8
+  <JumpForce>k__BackingField: 10
   <Radius>k__BackingField: 0.6
   <Height>k__BackingField: 2.4
   <Center>k__BackingField: {x: 0, y: 1.2, z: 0}

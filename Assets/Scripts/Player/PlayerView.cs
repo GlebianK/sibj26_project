@@ -8,6 +8,7 @@ public class PlayerView : MonoBehaviour
 {
     [SerializeField] private Volume _fxVolume;
     private MeshRenderer[] _renderers;
+    private SkinnedMeshRenderer _meshRenderer;
 
     public async UniTask ChangeViewAsync(float animationTime, bool forward, CancellationToken token)
     {
@@ -24,14 +25,7 @@ public class PlayerView : MonoBehaviour
             var value = Mathf.Lerp(startValue, endValue, t);
             _fxVolume.weight = value;
 
-            foreach (var renderer in _renderers)
-            {
-                for (var i = 0; i < renderer.materials.Length; i++)
-                {
-                    var material = renderer.materials[i];
-                    material.SetFloat("_T", value);
-                }
-            }
+            SetValue(value);
 
             await UniTask.Yield();
 
@@ -41,12 +35,29 @@ public class PlayerView : MonoBehaviour
 
     public void SetNormal()
     {
-        foreach (var renderer in _renderers)
+        SetValue(0f);
+    }
+
+    private void SetValue(float value)
+    {
+        if (_renderers != null && _renderers.Length > 0)
         {
-            for (var i = 0; i < renderer.materials.Length; i++)
+            foreach (var renderer in _renderers)
             {
-                var material = renderer.materials[i];
-                material.SetFloat("_T", 0f);
+                for (var i = 0; i < renderer.materials.Length; i++)
+                {
+                    var material = renderer.materials[i];
+                    material.SetFloat("_T", value);
+                }
+            }
+        }
+
+        if(_meshRenderer != null)
+        {
+            for (var i = 0; i < _meshRenderer.materials.Length; i++)
+            {
+                var material = _meshRenderer.materials[i];
+                material.SetFloat("_T", value);
             }
         }
     }
@@ -59,5 +70,6 @@ public class PlayerView : MonoBehaviour
     private void FindRenderers()
     {
         _renderers = GetComponentsInChildren<MeshRenderer>();
+        _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 }
