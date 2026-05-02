@@ -5524,18 +5524,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractionComponent
   _interactionActionReference: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   itemHoldingPoint: {fileID: 6453629970043675315}
-  bearPushPullPoint: {fileID: 2957256523468261832}
+  bearPushPullPoint: {fileID: 1285762720233525781}
+  playerView: {fileID: 1285762720233525781}
   _layerMaskZ:
     serializedVersion: 2
     m_Bits: 192
   _layerMaskX:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 3072
   _castRadius: 0.75
   _castRadiusSphere: 0.25
   _castOffsetTop: {x: 0, y: 2.03, z: 2}
   _castOffsetBottom: {x: 0, y: 0.35, z: 2}
-  _castOffsetForward: {x: 1, y: 0.75, z: 0}
+  _castOffsetForward: 1
+  _castOffsetForwardY: 1
   _drawDebug: 1
 --- !u!114 &6418709442964466841
 MonoBehaviour:
