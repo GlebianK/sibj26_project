@@ -77,9 +77,9 @@ public class InteractionManager : MonoBehaviour
                 return;
             case InteractableType.Breakable:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
+                PlayerController.Instance.Punch();
                 interactionResult = Blackboard.SelectedInteractable.Value.Interact();
                 PrintDebug(interactionResult);
-                // -------------------------------------------------------------------------- TODO: вызов анимации удара
                 return;
             default:
                 Debug.Log($"Wrong value for InteractionManager! Value = <color=red>{Blackboard.SelectedInteractable.Value.Type}</color>");
