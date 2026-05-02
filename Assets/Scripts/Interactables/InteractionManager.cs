@@ -61,7 +61,7 @@ public class InteractionManager : MonoBehaviour
                 return;
             case InteractableType.Movable:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
-                //Blackboard.PlayerStateProperty.Value = PlayerState.Pulling;
+                Blackboard.PlayerStateProperty.Value = PlayerState.Pulling;
                 interactionResult = Blackboard.SelectedInteractable.Value.Interact(playerIC.BearPushPullPoint);
                 PrintDebug(interactionResult);
                 return;

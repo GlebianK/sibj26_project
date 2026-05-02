@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
 
         Blackboard.PlayerStateProperty.SkipLatestValueOnSubscribe().Subscribe(value =>
         {
-            if (value == PlayerState.Movement)
+            if (value == PlayerState.Movement || value == PlayerState.Pulling)
             {
                 SetAllowInput(true);
             }
@@ -120,6 +120,8 @@ public class PlayerController : MonoBehaviour
             {
                 SetAllowInput(false);
             }
+
+            _bearAnimator.SetBool("IsPushing", value == PlayerState.Pulling);
         }).AddTo(this);
     }
 
@@ -235,7 +237,8 @@ public class PlayerController : MonoBehaviour
 
     private void Rotation()
     {
-        if (_movementDirection.sqrMagnitude > 0.01f)
+        if (_movementDirection.sqrMagnitude > 0.01f
+            && Blackboard.PlayerStateProperty.Value == PlayerState.Movement)
         {
             _targetRotation = Quaternion.LookRotation(_movementDirection, Vector3.up);
         }
@@ -247,7 +250,8 @@ public class PlayerController : MonoBehaviour
     {
         if (_allowInput
             && _characterController.isGrounded
-            && _jumpTimer <= 0f)
+            && _jumpTimer <= 0f
+            && Blackboard.PlayerStateProperty.Value == PlayerState.Movement)
         //&& Form == PlayerForm.Human)
         {
             var jumpForce = Form == PlayerForm.Human ? _humanConfig.JumpForce : _bearConfig.JumpForce;
@@ -316,7 +320,7 @@ public class PlayerController : MonoBehaviour
 
     private void ToggleForm_performed(InputAction.CallbackContext obj)
     {
-        if (!_allowInput) return;
+        if (!_allowInput || Blackboard.PlayerStateProperty.Value != PlayerState.Movement) return;
         var nextForm = Form == PlayerForm.Human ? PlayerForm.Bear : PlayerForm.Human;
         ChangeForm(nextForm);
     }

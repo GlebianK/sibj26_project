@@ -10,6 +10,8 @@ public class InteractableMovable : InteractableBase
         isBeingInteractedWith = false;
     }
 
+
+
     override public bool Interact(GameObject newParent)
     {
         if (isDebugging)
@@ -28,9 +30,19 @@ public class InteractableMovable : InteractableBase
             Debug.Log($"This is the <color=yellow>InteractableEnvironment's</color> Interact method! GO: {gameObject.name}");
 
         isBeingInteractedWith = true;
+        var position = transform.position;
+        position.y = newParent.transform.position.y;
+        transform.position = position;
+
+        //var rb = GetComponent<Rigidbody>();
+        //rb.isKinematic = true;
+        //rb.transform.position = position;
+        //rb.PublishTransform();
+        //rb.isKinematic = false;
+
         transform.SetParent(newParent.transform);
-        transform.localPosition = new Vector3(0, transform.localPosition.y, 0);
-        
+        //transform.localPosition = new Vector3(0, transform.localPosition.y, 0);
+
         return true;
     }
 }

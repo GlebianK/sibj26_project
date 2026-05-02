@@ -135,8 +135,8 @@ public class InteractionComponent : MonoBehaviour
 
     private void Interaction_performed(InputAction.CallbackContext obj)
     {
-        Debug.Log("¬«¿»ÃŒƒ≈…—“¬»≈ ∆!");
-        
+        //Debug.Log("¬«¿»ÃŒƒ≈…—“¬»≈ ∆!");
+
         InteractionManager.Instance.TryInteract(this.gameObject);
     }
 
@@ -152,11 +152,13 @@ public class InteractionComponent : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(position2, _castRadius);
 
-        Vector3 temp = playerView.transform.forward * _castOffsetForward;
-        temp.y = _castOffsetForwardY;
-        Vector3 position3 = transform.position + temp;
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(position3, _castRadiusSphere);
-
+        if (playerView != null)
+        {
+            Vector3 temp = playerView.transform.forward * _castOffsetForward;
+            temp.y = _castOffsetForwardY;
+            Vector3 position3 = transform.position + temp;
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(position3, _castRadiusSphere);
+        }
     }
 }
