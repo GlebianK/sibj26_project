@@ -12,7 +12,7 @@ public class InteractionComponent : MonoBehaviour
     [SerializeField] private InputActionReference _interactionActionReference;
     [SerializeField] private GameObject itemHoldingPoint;
     [SerializeField] private GameObject bearPushPullPoint;
-    //[SerializeField] private GameObject playerView;
+    [SerializeField] private GameObject playerView;
 
     [Space, Header("Spere cast info")]
     [SerializeField] private LayerMask _layerMaskZ;
@@ -100,7 +100,7 @@ public class InteractionComponent : MonoBehaviour
     private void CastSphere()
     {
         hitCountsCapsule = 0;
-        resultingOffsetForward = PlayerController.Instance.View.forward * _castOffsetForward;
+        resultingOffsetForward = playerView.transform.forward * _castOffsetForward;
         resultingOffsetForward.y = _castOffsetForwardY;
         hitCountsSphere = Physics.OverlapSphereNonAlloc(transform.position + resultingOffsetForward,
             _castRadius, _results, _layerMaskX);
@@ -152,9 +152,9 @@ public class InteractionComponent : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(position2, _castRadius);
 
-        if (PlayerController.Instance != null && PlayerController.Instance.View != null)
+        if (playerView != null)
         {
-            Vector3 temp = PlayerController.Instance.View.forward * _castOffsetForward;
+            Vector3 temp = playerView.transform.forward * _castOffsetForward;
             temp.y = _castOffsetForwardY;
             Vector3 position3 = transform.position + temp;
             Gizmos.color = Color.red;

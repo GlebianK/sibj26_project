@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour
     //public bool AllowInput { get => _allowInput; set => SetAllowInput(value); }
 
     public PlayerForm Form { get; private set; } = PlayerForm.Human;
-    public Transform View => _views;
 
     [SerializeField] private InputActionReference _movementActionReference;
     [SerializeField] private InputActionReference _jumpActionReference;
