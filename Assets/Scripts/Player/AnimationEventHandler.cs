@@ -9,6 +9,11 @@ public class AnimationEventHandler : MonoBehaviour
         PlayerController.Instance.EndClimb();
     }
 
+    public void EndPunch()
+    {
+        PlayerController.Instance.EndPunch();
+    }
+
     public void Step()
     {
         _stepSFX.Play();

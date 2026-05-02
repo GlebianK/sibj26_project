@@ -94,6 +94,18 @@ public class PlayerController : MonoBehaviour
         //_isClimbing = false;
     }
 
+    public void Punch()
+    {
+        if (!_bearAnimator.gameObject.activeInHierarchy) return;
+        SetAllowInput(false);
+        _bearAnimator.SetTrigger("Punch");
+    }
+
+    public void EndPunch()
+    {
+        SetAllowInput(true);
+    }
+
     private void Awake()
     {
         if (!Instance)
@@ -124,7 +136,6 @@ public class PlayerController : MonoBehaviour
             _bearAnimator.SetBool("IsPushing", value == PlayerState.Pulling);
         }).AddTo(this);
     }
-
 
     private void OnDestroy()
     {
@@ -165,6 +176,12 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        var angle = Vector3.Angle(_movementDirection, _views.transform.forward);
+
+        var isMovingBackward = _movementDirection.sqrMagnitude > 0f
+            && Blackboard.PlayerStateProperty.Value == PlayerState.Pulling
+            && angle > 90f;
+
         if (_bearAnimator.gameObject.activeInHierarchy)
         {
             _bearAnimator.SetBool("IsMoving", isMoving);
@@ -174,6 +191,8 @@ public class PlayerController : MonoBehaviour
             {
                 _bearStepsSFX.Play();
             }
+
+            _bearAnimator.SetBool("IsMovingBackward", isMovingBackward);
 
             //if (_isClimbing)
             //{
@@ -188,6 +207,10 @@ public class PlayerController : MonoBehaviour
         {
             _isJump = false;
         }
+
+
+
+
     }
 
     private async UniTaskVoid ChangeFormAsync(PlayerForm form, CancellationToken token)
