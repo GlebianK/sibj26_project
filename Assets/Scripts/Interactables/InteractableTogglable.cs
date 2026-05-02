@@ -33,6 +33,9 @@ public class InteractableTogglable : InteractableBase
         if (isInteractableOnce && hasBeenInteractedWith)
             return false;
 
+        if (connectedTogglable.IsChangingState)
+            return false;
+
         base.Interact();
         if (isDebugging)
             Debug.Log("This is the <color=yellow>InteractableTogglable's</color> Interact method ;)");
