@@ -6,10 +6,12 @@ public class InteractionManager : MonoBehaviour
 
     [SerializeField] private bool isDebugging;
     [SerializeField] private InteractionComponent playerIC;
+    [SerializeField, HideInInspector] private InteractableType lastType;
+
+    public bool HandsAreBusy { get; private set; }
 
     public bool IsInInteraction { get; private set; }
 
-    [SerializeField, HideInInspector] private InteractableType lastType;
 
     private void Awake()
     {
@@ -22,8 +24,15 @@ public class InteractionManager : MonoBehaviour
         IsInInteraction = false;
         lastType = InteractableType.None;
 
+        HandsAreBusy = false;
+
         if (isDebugging)
             Debug.Log($"New type: {lastType}");
+    }
+
+    public void OccupyHands(bool shouldOccupy)
+    {
+        HandsAreBusy = shouldOccupy;
     }
 
     public void TryInteract(GameObject interactionInitiator)
