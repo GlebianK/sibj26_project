@@ -20,8 +20,12 @@ public class TogglablePlatform : TogglableBase
 
     public override void ChangeState()
     {
+        if (IsChangingState)
+            return;
+
         IsChangingState = true;
-        transform.DOMoveY(transform.position.y + moveHeight * moveDirection, stateChangeDuration).OnComplete(() => OnChangeStateCompleted());
+        controllableObject.transform.DOMoveY(controllableObject.transform.position.y + moveHeight * moveDirection, 
+            stateChangeDuration).OnComplete(() => OnChangeStateCompleted());
     }
 
     private void OnChangeStateCompleted()
