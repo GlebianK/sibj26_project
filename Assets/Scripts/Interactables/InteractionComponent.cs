@@ -25,12 +25,17 @@ public class InteractionComponent : MonoBehaviour
 
     private Collider[] _results = new Collider[1];
 
-    //private int hitCounts
+    private int hitCountsCapsule;
+    private int hitCountsSphere;
 
     public GameObject ItemHoldingPoint { get { return itemHoldingPoint; } }
+    public GameObject BearPushPullPoint { get { return bearPushPullPoint; } }
 
     private void Awake()
     {
+        hitCountsCapsule = 0;
+        hitCountsSphere = 0;
+
         _interactionActionReference.action.performed += Interaction_performed;
 
         Blackboard.SelectedInteractable.SkipLatestValueOnSubscribe().Subscribe(value =>
@@ -55,14 +60,14 @@ public class InteractionComponent : MonoBehaviour
 
     private void CastCapsule()
     {
-        var hitCount = Physics.OverlapCapsuleNonAlloc(transform.position + _castOffsetTop, transform.position + _castOffsetBottom,
+        hitCountsCapsule = Physics.OverlapCapsuleNonAlloc(transform.position + _castOffsetTop, transform.position + _castOffsetBottom,
             _castRadius, _results, _layerMaskZ);
 
-        if (hitCount == 0)
+        if (hitCountsCapsule == 0 && hitCountsSphere == 0)
         {
             Blackboard.SelectedInteractable.Value = null;
         }
-        else
+        else if (hitCountsCapsule > 0)
         {
             var targetObject = _results[0].attachedRigidbody != null
                 ? _results[0].attachedRigidbody.gameObject : _results[0].gameObject;
@@ -77,13 +82,13 @@ public class InteractionComponent : MonoBehaviour
 
     private void CastSphere()
     {
-        var hitCount = Physics.OverlapSphereNonAlloc(transform.position + _castOffsetForward, _castRadius, _results, _layerMaskX);
+        hitCountsSphere = Physics.OverlapSphereNonAlloc(transform.position + _castOffsetForward, _castRadius, _results, _layerMaskX);
 
-        if (hitCount == 0)
+        if (hitCountsCapsule == 0 && hitCountsSphere == 0)
         {
             Blackboard.SelectedInteractable.Value = null;
         }
-        else
+        else if (hitCountsSphere > 0)
         {
             var targetObject = _results[0].attachedRigidbody != null
                 ? _results[0].attachedRigidbody.gameObject : _results[0].gameObject;
