@@ -40,10 +40,12 @@ public class InteractionManager : MonoBehaviour
     public void TryInteract(GameObject interactionInitiator)
     {
         if (isDebugging)
-            Debug.Log("IM: trying to interact...");
+            Debug.Log($"IM: trying to interact... Current Value.Type = {Blackboard.SelectedInteractable.Value.Type}");
 
+        /*
         if (Blackboard.SelectedInteractable.Value == null || Blackboard.PlayerStateProperty.Value != PlayerState.Movement)
             return;
+        */
 
         IsInInteraction = true;
 
@@ -60,8 +62,8 @@ public class InteractionManager : MonoBehaviour
             case InteractableType.Movable:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
                 Blackboard.PlayerStateProperty.Value = PlayerState.Pulling;
-                //interactionResult = Blackboard.SelectedInteractable.Value.Interact();
-                //PrintDebug(interactionResult);
+                interactionResult = Blackboard.SelectedInteractable.Value.Interact(playerIC.BearPushPullPoint);
+                PrintDebug(interactionResult);
                 return;
             case InteractableType.Togglable:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
