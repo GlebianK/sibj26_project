@@ -12,6 +12,7 @@ public class InteractionComponent : MonoBehaviour
     [SerializeField] private InputActionReference _interactionActionReference;
     [SerializeField] private GameObject itemHoldingPoint;
     [SerializeField] private GameObject bearPushPullPoint;
+    [SerializeField] private GameObject playerView;
 
     [Space, Header("Spere cast info")]
     [SerializeField] private LayerMask _layerMaskZ;
@@ -20,13 +21,15 @@ public class InteractionComponent : MonoBehaviour
     [SerializeField] private float _castRadiusSphere = .25f;
     [SerializeField] private Vector3 _castOffsetTop;
     [SerializeField] private Vector3 _castOffsetBottom;
-    [SerializeField] private Vector3 _castOffsetForward;
+    [SerializeField] private float _castOffsetForward;
+    [SerializeField] private float _castOffsetForwardY;
     [SerializeField] private bool _drawDebug;
 
     private Collider[] _results = new Collider[1];
 
     private int hitCountsCapsule;
     private int hitCountsSphere;
+    private Vector3 resultingOffsetForward;
 
     public GameObject ItemHoldingPoint { get { return itemHoldingPoint; } }
     public GameObject BearPushPullPoint { get { return bearPushPullPoint; } }
@@ -97,7 +100,10 @@ public class InteractionComponent : MonoBehaviour
     private void CastSphere()
     {
         hitCountsCapsule = 0;
-        hitCountsSphere = Physics.OverlapSphereNonAlloc(transform.position + _castOffsetForward, _castRadius, _results, _layerMaskX);
+        resultingOffsetForward = playerView.transform.forward * _castOffsetForward;
+        resultingOffsetForward.y = _castOffsetForwardY;
+        hitCountsSphere = Physics.OverlapSphereNonAlloc(transform.position + resultingOffsetForward,
+            _castRadius, _results, _layerMaskX);
 
         if (hitCountsCapsule == 0 && hitCountsSphere == 0)
         {
@@ -146,8 +152,10 @@ public class InteractionComponent : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(position2, _castRadius);
 
-        Vector3 position3 = transform.position + _castOffsetForward;
-        Gizmos.color = Color.yellow;
+        Vector3 temp = playerView.transform.forward * _castOffsetForward;
+        temp.y = _castOffsetForwardY;
+        Vector3 position3 = transform.position + temp;
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(position3, _castRadiusSphere);
 
     }
