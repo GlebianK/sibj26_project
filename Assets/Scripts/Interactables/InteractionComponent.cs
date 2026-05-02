@@ -15,7 +15,8 @@ public class InteractionComponent : MonoBehaviour
     [Space, Header("Spere cast info")]
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private float _castRadius = .5f;
-    [SerializeField] private Vector3 _castOffset;
+    [SerializeField] private Vector3 _castOffsetTop;
+    [SerializeField] private Vector3 _castOffsetBottom;
     [SerializeField] private bool _drawDebug;
 
     private Collider[] _results = new Collider[1];
@@ -47,7 +48,8 @@ public class InteractionComponent : MonoBehaviour
 
     private void Cast()
     {
-        var hitCount = Physics.OverlapSphereNonAlloc(transform.position + _castOffset, _castRadius, _results, _layerMask);
+        var hitCount = Physics.OverlapCapsuleNonAlloc(transform.position + _castOffsetTop, transform.position + _castOffsetBottom,
+            _castRadius, _results, _layerMask);
 
         if (hitCount == 0)
         {
@@ -76,16 +78,24 @@ public class InteractionComponent : MonoBehaviour
         else
             InteractionManager.Instance.CompleteInteraction(); // убрать? оставить вызов в самих объектах?
         */
-
-        InteractionManager.Instance.TryInteract(this.gameObject);
+        
+        if (InteractionManager.Instance.HandsAreBusy) // TODO добавить проверку на взаимодействие флешка-комп и подобные
+            InteractionManager.Instance.CompleteInteraction();
+        else
+            InteractionManager.Instance.TryInteract(this.gameObject);
     }
 
     private void OnDrawGizmos()
     {
         if (!_drawDebug) return;
 
-        var position = transform.position + _castOffset;
+        Vector3 position1 = transform.position + _castOffsetTop;
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(position, _castRadius);
+        Gizmos.DrawWireSphere(position1, _castRadius);
+
+        Vector3 position2 = transform.position + _castOffsetBottom;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(position2, _castRadius);
+
     }
 }

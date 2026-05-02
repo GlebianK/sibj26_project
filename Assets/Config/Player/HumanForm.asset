@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e31dbfb13f606f945b3cfb609067969b, type: 3}
   m_Name: HumanForm
   m_EditorClassIdentifier: Assembly-CSharp::PlayerConfig
-  <Speed>k__BackingField: 4.5
+  <Speed>k__BackingField: 3.2
+  <JumpForce>k__BackingField: 7
   <Radius>k__BackingField: 0.4
   <Height>k__BackingField: 1.6
   <Center>k__BackingField: {x: 0, y: 0.8, z: 0}

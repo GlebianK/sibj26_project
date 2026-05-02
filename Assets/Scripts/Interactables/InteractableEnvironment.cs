@@ -42,6 +42,9 @@ public class InteractableEnvironment : InteractableBase
         IsMoving = true;
         IsInteractable = false;
 
+        PlayerController.Instance.AllowMovement = false;
+        PlayerController.Instance.gameObject.transform.SetParent(platformMovable.transform);
+
         platformMovable.transform.DOMoveY(targetPosition.y, moveDuration).OnComplete(() => ResetElevator()); 
 
         return true;
@@ -57,6 +60,9 @@ public class InteractableEnvironment : InteractableBase
         IsMoving = false;
         IsInteractable = true;
         InteractionManager.Instance.CompleteInteraction();
+
+        PlayerController.Instance.gameObject.transform.SetParent(null);
+        PlayerController.Instance.AllowMovement = true;
 
         if (isDebugging)
             Debug.Log($"Interaction with type {Blackboard.SelectedInteractable.Value.Type}: <color=green>success!</color>");
