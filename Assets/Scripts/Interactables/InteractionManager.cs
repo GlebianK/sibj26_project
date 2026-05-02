@@ -42,10 +42,10 @@ public class InteractionManager : MonoBehaviour
         if (isDebugging)
             Debug.Log($"IM: trying to interact... Current Value.Type = {Blackboard.SelectedInteractable.Value.Type}");
 
-        /*
-        if (Blackboard.SelectedInteractable.Value == null || Blackboard.PlayerStateProperty.Value != PlayerState.Movement)
+        
+        if (Blackboard.SelectedInteractable.Value == null)
             return;
-        */
+        
 
         IsInInteraction = true;
 
