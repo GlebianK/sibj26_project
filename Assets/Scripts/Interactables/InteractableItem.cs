@@ -35,6 +35,7 @@ public class InteractableItem : InteractableBase
         transform.localPosition = Vector3.zero;
 
         InteractionManager.Instance.OccupyHands(true, gameObject);
+        InteractionManager.Instance.CompleteInteraction();
 
         return true;
     }
