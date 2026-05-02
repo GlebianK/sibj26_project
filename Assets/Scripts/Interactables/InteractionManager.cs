@@ -9,6 +9,7 @@ public class InteractionManager : MonoBehaviour
     [SerializeField, HideInInspector] private InteractableType lastType;
 
     public bool HandsAreBusy { get; private set; }
+    public GameObject ObjectInHands { get; private set; }
 
     public bool IsInInteraction { get; private set; }
 
@@ -30,18 +31,21 @@ public class InteractionManager : MonoBehaviour
             Debug.Log($"New type: {lastType}");
     }
 
-    public void OccupyHands(bool shouldOccupy)
+    public void OccupyHands(bool shouldOccupy, GameObject objectToOccupyWith = null)
     {
         HandsAreBusy = shouldOccupy;
+        ObjectInHands = objectToOccupyWith;
     }
 
     public void TryInteract(GameObject interactionInitiator)
     {
         if (isDebugging)
-            Debug.Log("IM: trying to interact...");
+            Debug.Log($"IM: trying to interact... Current Value.Type = {Blackboard.SelectedInteractable.Value.Type}");
 
-        if (Blackboard.SelectedInteractable.Value == null || Blackboard.PlayerStateProperty.Value != PlayerState.Movement)
+        
+        if (Blackboard.SelectedInteractable.Value == null)
             return;
+        
 
         IsInInteraction = true;
 
@@ -58,8 +62,8 @@ public class InteractionManager : MonoBehaviour
             case InteractableType.Movable:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
                 Blackboard.PlayerStateProperty.Value = PlayerState.Pulling;
-                //interactionResult = Blackboard.SelectedInteractable.Value.Interact();
-                //PrintDebug(interactionResult);
+                interactionResult = Blackboard.SelectedInteractable.Value.Interact(playerIC.BearPushPullPoint);
+                PrintDebug(interactionResult);
                 return;
             case InteractableType.Togglable:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
@@ -68,7 +72,6 @@ public class InteractionManager : MonoBehaviour
                 return;
             case InteractableType.Item:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
-                Blackboard.PlayerStateProperty.Value = PlayerState.Carrying;
                 interactionResult = Blackboard.SelectedInteractable.Value.Interact(playerIC.ItemHoldingPoint);
                 PrintDebug(interactionResult);
                 return;
@@ -90,7 +93,7 @@ public class InteractionManager : MonoBehaviour
         string colorGreen = "green";
 
         string resColor = res ? colorGreen : colorRed;
-        Debug.Log($"<color={resColor}>{res}</color>");
+        Debug.Log($"INTERACTION RESULT: <color={resColor}>{res}</color>");
     }
 
     public void CompleteInteraction()
@@ -103,14 +106,6 @@ public class InteractionManager : MonoBehaviour
             if (isDebugging)
                 Debug.Log("<color=yellow>Trying to cancel interaction with</color> <color=red>NULL</color>");
             return;
-        }
-
-        if (lastType == InteractableType.Item)
-        {
-            if (isDebugging)
-                Debug.Log("Cancelling interaction with Item");
-
-            Blackboard.SelectedInteractable.Value.Interact(playerIC.ItemHoldingPoint);
         }
 
         lastType = InteractableType.None;

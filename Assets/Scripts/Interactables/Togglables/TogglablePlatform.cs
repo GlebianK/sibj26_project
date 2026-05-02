@@ -10,6 +10,8 @@ public class TogglablePlatform : TogglableBase
 
     private void Awake()
     {
+        IsChangingState = false;
+
         if (isBottomDefault)
             moveDirection = 1;
         else
@@ -18,6 +20,17 @@ public class TogglablePlatform : TogglableBase
 
     public override void ChangeState()
     {
-        transform.DOMoveY(transform.position.y + moveHeight * moveDirection, stateChangeDuration).OnComplete(() => moveDirection *= -1);
+        if (IsChangingState)
+            return;
+
+        IsChangingState = true;
+        controllableObject.transform.DOMoveY(controllableObject.transform.position.y + moveHeight * moveDirection, 
+            stateChangeDuration).OnComplete(() => OnChangeStateCompleted());
+    }
+
+    private void OnChangeStateCompleted()
+    {
+        moveDirection *= -1;
+        IsChangingState = false;
     }
 }
