@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7297680580555997531}
   - component: {fileID: 3354062008581268558}
   m_Layer: 6
-  m_Name: Cube_I
+  m_Name: Item
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157,3 +157,4 @@ MonoBehaviour:
   interactableType: 2
   rb: {fileID: 7297680580555997531}
   itemCollider: {fileID: 4587515190734217447}
+  throwForce: 0

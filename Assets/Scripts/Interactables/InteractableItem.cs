@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class InteractableItem : InteractableBase
@@ -25,21 +24,25 @@ public class InteractableItem : InteractableBase
         if (isDebugging)
             Debug.Log($"This is the <color=yellow>InteractableItem's</color> Interact method! GO: {gameObject.name}");
 
-        IsBeingCarried = !IsBeingCarried;
+        if (InteractionManager.Instance.HandsAreBusy)
+            return false;
 
-        if (IsBeingCarried)
-        {
-            rb.useGravity = false;
-            transform.SetParent(newParent.transform);
-            transform.localPosition = Vector3.zero;
-        }
-        else
-        {
-            transform.SetParent(null);
-            rb.useGravity = true;
-            rb.AddRelativeForce(Vector3.forward * throwForce, ForceMode.VelocityChange);
-        }
+        IsBeingCarried = true;
+        IsInteractable = false;
+
+        rb.useGravity = false;
+        transform.SetParent(newParent.transform);
+        transform.localPosition = Vector3.zero;
+
+        InteractionManager.Instance.OccupyHands(true, gameObject);
 
         return true;
+    }
+
+    public void Use()
+    {
+        InteractionManager.Instance.OccupyHands(false, null);
+        InteractionManager.Instance.CompleteInteraction();
+        Destroy(gameObject);
     }
 }

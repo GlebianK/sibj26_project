@@ -71,18 +71,8 @@ public class InteractionComponent : MonoBehaviour
     private void Interaction_performed(InputAction.CallbackContext obj)
     {
         Debug.Log("ВЗАИМОДЕЙСТВИЕ Ж!");
-
-        /*
-        if (!InteractionManager.Instance.IsInInteraction)
-            InteractionManager.Instance.TryInteract(this.gameObject);
-        else
-            InteractionManager.Instance.CompleteInteraction(); // убрать? оставить вызов в самих объектах?
-        */
         
-        if (InteractionManager.Instance.HandsAreBusy) // TODO добавить проверку на взаимодействие флешка-комп и подобные
-            InteractionManager.Instance.CompleteInteraction();
-        else
-            InteractionManager.Instance.TryInteract(this.gameObject);
+        InteractionManager.Instance.TryInteract(this.gameObject);
     }
 
     private void OnDrawGizmos()
