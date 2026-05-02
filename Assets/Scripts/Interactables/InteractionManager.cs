@@ -42,8 +42,10 @@ public class InteractionManager : MonoBehaviour
         if (isDebugging)
             Debug.Log($"IM: trying to interact... Current Value.Type = {Blackboard.SelectedInteractable.Value.Type}");
 
-
-        if (Blackboard.SelectedInteractable.Value == null) return;
+        
+        if (Blackboard.SelectedInteractable.Value == null)
+            return;
+        
 
         IsInInteraction = true;
 
@@ -70,7 +72,6 @@ public class InteractionManager : MonoBehaviour
                 return;
             case InteractableType.Item:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
-                //Blackboard.PlayerStateProperty.Value = PlayerState.Carrying;
                 interactionResult = Blackboard.SelectedInteractable.Value.Interact(playerIC.ItemHoldingPoint);
                 PrintDebug(interactionResult);
                 return;

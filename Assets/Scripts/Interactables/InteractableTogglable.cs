@@ -27,6 +27,8 @@ public class InteractableTogglable : InteractableBase
 
     override public bool Interact()
     {
+        InteractionManager.Instance.CompleteInteraction();
+
         if (isDebugging)
             Debug.Log("Toggable: <color=yellow>Trying to interact... </color>");
 
@@ -56,7 +58,7 @@ public class InteractableTogglable : InteractableBase
         if (connectedTogglable != null)
             connectedTogglable.ChangeState();
 
-        InteractionManager.Instance.CompleteInteraction();
+        //InteractionManager.Instance.CompleteInteraction();
 
         if (isDebugging)
             Debug.Log($"Interaction with type {Blackboard.SelectedInteractable.Value.Type}: <color=green>success!</color>");
