@@ -5,6 +5,7 @@ public class InteractableItem : InteractableBase
 {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Collider itemCollider;
+    [SerializeField] private float throwForce;
 
     public bool IsBeingCarried { get; private set; }
 
@@ -13,19 +14,8 @@ public class InteractableItem : InteractableBase
         base.Awake();
         IsBeingCarried = false;
 
-        rb.useGravity = false;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("Platform"))
-        {
-            rb.useGravity = false;
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-        }
     }
 
     override public bool Interact(GameObject newParent)
@@ -39,6 +29,7 @@ public class InteractableItem : InteractableBase
 
         if (IsBeingCarried)
         {
+            rb.useGravity = false;
             transform.SetParent(newParent.transform);
             transform.localPosition = Vector3.zero;
         }
@@ -46,6 +37,7 @@ public class InteractableItem : InteractableBase
         {
             transform.SetParent(null);
             rb.useGravity = true;
+            rb.AddRelativeForce(Vector3.forward * throwForce, ForceMode.VelocityChange);
         }
 
         return true;

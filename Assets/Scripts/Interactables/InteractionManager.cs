@@ -6,18 +6,33 @@ public class InteractionManager : MonoBehaviour
 
     [SerializeField] private bool isDebugging;
     [SerializeField] private InteractionComponent playerIC;
+    [SerializeField, HideInInspector] private InteractableType lastType;
+
+    public bool HandsAreBusy { get; private set; }
 
     public bool IsInInteraction { get; private set; }
 
-    private InteractableType lastType;
 
     private void Awake()
     {
+        if (isDebugging)
+            Debug.Log($"Saved type: {lastType}");
+
         if (Instance == null)
             Instance = this;
 
         IsInInteraction = false;
         lastType = InteractableType.None;
+
+        HandsAreBusy = false;
+
+        if (isDebugging)
+            Debug.Log($"New type: {lastType}");
+    }
+
+    public void OccupyHands(bool shouldOccupy)
+    {
+        HandsAreBusy = shouldOccupy;
     }
 
     public void TryInteract(GameObject interactionInitiator)
@@ -25,7 +40,7 @@ public class InteractionManager : MonoBehaviour
         if (isDebugging)
             Debug.Log("IM: trying to interact...");
 
-        if (Blackboard.SelectedInteractable.Value == null || IsInInteraction)
+        if (Blackboard.SelectedInteractable.Value == null || Blackboard.PlayerStateProperty.Value != PlayerState.Movement)
             return;
 
         IsInInteraction = true;
@@ -34,13 +49,17 @@ public class InteractionManager : MonoBehaviour
 
         switch (Blackboard.SelectedInteractable.Value.Type)  // TODO: в кейсах прописать действия игрока (изменение стейтов/анимаций)
         {
-            case InteractableType.Evironment:       // СДЕЛАТЬ АСИНК И ЖДАТЬ, ПОКА IsInInteraction НЕ СТАНЕТ FALSE?
+            case InteractableType.Evironment:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
+                Blackboard.PlayerStateProperty.Value = PlayerState.Cutscene;
                 interactionResult = Blackboard.SelectedInteractable.Value.Interact();
                 PrintDebug(interactionResult);
                 return;
             case InteractableType.Movable:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
+                Blackboard.PlayerStateProperty.Value = PlayerState.Pulling;
+                //interactionResult = Blackboard.SelectedInteractable.Value.Interact();
+                //PrintDebug(interactionResult);
                 return;
             case InteractableType.Togglable:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
@@ -49,12 +68,14 @@ public class InteractionManager : MonoBehaviour
                 return;
             case InteractableType.Item:
                 lastType = Blackboard.SelectedInteractable.Value.Type;
+                Blackboard.PlayerStateProperty.Value = PlayerState.Carrying;
                 interactionResult = Blackboard.SelectedInteractable.Value.Interact(playerIC.ItemHoldingPoint);
                 PrintDebug(interactionResult);
                 return;
             default:
                 Debug.Log($"Wrong value for InteractionManager! Value = <color=red>{Blackboard.SelectedInteractable.Value.Type}</color>");
                 lastType = InteractableType.None;
+                Blackboard.PlayerStateProperty.Value = PlayerState.None;
                 IsInInteraction = false;
                 return;
         }
@@ -84,28 +105,17 @@ public class InteractionManager : MonoBehaviour
             return;
         }
 
-        switch (Blackboard.SelectedInteractable.Value.Type)  // TODO: в кейсах прописать действия игрока (изменение стейтов/анимаций)
+        if (lastType == InteractableType.Item)
         {
-            case InteractableType.Evironment:
-                break;
-            case InteractableType.Movable:
-                break;
-            case InteractableType.Togglable:
-                IsInInteraction = false;
-                break;
-            case InteractableType.Item:
-                break;
-            default:
-                Debug.Log($"Wrong value for InteractionManager! Value = <color=red>{Blackboard.SelectedInteractable.Value.Type}</color>");
-                IsInInteraction = false;
-                break;
+            if (isDebugging)
+                Debug.Log("Cancelling interaction with Item");
+
+            Blackboard.SelectedInteractable.Value.Interact(playerIC.ItemHoldingPoint);
         }
 
         lastType = InteractableType.None;
-
         IsInInteraction = false;
-
-        // TODO: смена стейта игрока
+        Blackboard.PlayerStateProperty.Value = PlayerState.Movement;
     }
 
     private void OnGUI()
