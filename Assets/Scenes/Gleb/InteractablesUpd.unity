@@ -753,7 +753,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractionComponent
   _interactionActionReference: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   itemHoldingPoint: {fileID: 1689573159}
-  bearPushPullPoint: {fileID: 1689573159}
+  bearPushPullPoint: {fileID: 100708477}
   _layerMaskZ:
     serializedVersion: 2
     m_Bits: 192
