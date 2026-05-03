@@ -7,7 +7,7 @@ public class TogglableBase : MonoBehaviour
 
     public bool IsChangingState { get; protected set; }
 
-    public virtual void ChangeState()
+    virtual public void ChangeState()
     {
         Debug.Log($"Base method. Changing sate of <color=yellow>{gameObject.name}</color>");
     }
