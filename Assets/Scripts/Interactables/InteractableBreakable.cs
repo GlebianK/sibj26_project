@@ -1,9 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class InteractableBreakable : InteractableBase
 {
     [Tooltip("0 - default state")]
     [SerializeField] protected GameObject[] objectStates;
+    [SerializeField] protected float disappearTimer = 7.5f;
 
     override protected void Awake()
     {
@@ -46,7 +48,8 @@ public class InteractableBreakable : InteractableBase
             obj.SetActive(!obj.activeInHierarchy);
             if (obj.activeInHierarchy && obj.TryGetComponent<Collider>(out Collider col))
             {
-                 col.enabled = false;
+                //col.enabled = false;
+                StartCoroutine(Disappear((obj, col)));
             }
         }
 
@@ -54,5 +57,19 @@ public class InteractableBreakable : InteractableBase
             Debug.Log($"Interaction with type {Blackboard.SelectedInteractable.Value.Type}: <color=green>success!</color>");
 
         IsInteractable = false;
+    }
+
+    private IEnumerator Disappear((GameObject objectToDestroy, Collider colToDisappear) data)
+    {
+        yield return new WaitForSeconds(3f);
+        data.colToDisappear.enabled = false;
+        yield return new WaitForSeconds(disappearTimer);
+        Destroy(data.objectToDestroy);
+        yield return null;
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
 }
