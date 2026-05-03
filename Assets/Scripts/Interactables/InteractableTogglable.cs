@@ -51,10 +51,13 @@ public class InteractableTogglable : InteractableBase
     {
         if (isDebugging)
             Debug.Log($"{gameObject.name}: <color=green>changing state here =)</color>");
-        
-        foreach (GameObject obj in objectStates)
-            obj.SetActive(!obj.activeInHierarchy);
 
+        if (objectStates.Length > 1)
+        {
+            foreach (GameObject obj in objectStates)
+                obj.SetActive(!obj.activeInHierarchy);
+        }
+        
         if (connectedTogglable != null)
             connectedTogglable.ChangeState();
 
