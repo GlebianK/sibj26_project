@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Anton/Gameplay Scene.unity
-    guid: ea2ce6ccb3f45eb419bd1d86596071dc
+    path: Assets/Scenes/Mary/Mary_Blocking_UPD.unity
+    guid: 4f2d52a3e9d118b48a3ab2668e2abfc1
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
