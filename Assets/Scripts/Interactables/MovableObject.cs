@@ -4,6 +4,7 @@ public class MovableObject : MonoBehaviour
 {
     [SerializeField] private InteractableMovable imController;
     [SerializeField] private float disconnectAltitude;
+    //[SerializeField] private Rigidbody rb;
 
     private void Update()
     {
@@ -13,6 +14,10 @@ public class MovableObject : MonoBehaviour
             {
                 imController.Interact(null);
             }
+            /*
+            else if (rb.transform.localPosition.x < 0)
+                rb.transform.localPosition = new Vector3(0f, rb.transform.localPosition.y, 0f);
+            */
         }
     }
 }

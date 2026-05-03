@@ -26,9 +26,9 @@ public class FinishGame : TogglableBase
 
     private void FinishThisGame()
     {
+        MainFadeIn();
         PlayerController.Instance.AllowMovement = false;
         Blackboard.PlayerStateProperty.Value = PlayerState.None;
-        MainFadeIn();
     }
 
     private void MainFadeIn()
@@ -48,8 +48,8 @@ public class FinishGame : TogglableBase
         Debug.LogWarning("Sub fade starts!");
         canvasGroupText.DOFade(1f, fadeDuration).OnComplete(() =>
         {
-            finishButton.interactable = true;
             Debug.LogWarning("Sub fade ends!");
+            finishButton.interactable = true;
         });
     }
 
