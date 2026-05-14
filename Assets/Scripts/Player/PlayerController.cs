@@ -207,10 +207,6 @@ public class PlayerController : MonoBehaviour
         {
             _isJump = false;
         }
-
-
-
-
     }
 
     private async UniTaskVoid ChangeFormAsync(PlayerForm form, CancellationToken token)
@@ -255,6 +251,17 @@ public class PlayerController : MonoBehaviour
         var targetVelocity = _velocity + (_movementDirection * _movementSpeed);
 
         var zOffset = new Vector3(0f, 0f, transform.position.z);
+
+        // дю, мейпюяхбн, мн пюг лш опнейр апняюел, рн унрэ йюй-рн онвхмхрэ йняъй фе мюдн =D
+        if (InteractionManager.Instance.ObjectBeingMoved != null)
+        {
+            if (!InteractionManager.Instance.ObjectBeingMoved.CanBePushed && 
+                _movementDirection.x == InteractionManager.Instance.ObjectBeingMoved.PushDirection)
+            {
+                return;
+            }
+        }
+
         _characterController.Move(-zOffset + targetVelocity * Time.deltaTime);
     }
 

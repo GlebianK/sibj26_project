@@ -10,6 +10,7 @@ public class InteractionManager : MonoBehaviour
 
     public bool HandsAreBusy { get; private set; }
     public GameObject ObjectInHands { get; private set; }
+    public InteractableMovable ObjectBeingMoved { get; private set; }
 
     public bool IsInInteraction { get; private set; }
 
@@ -35,6 +36,12 @@ public class InteractionManager : MonoBehaviour
     {
         HandsAreBusy = shouldOccupy;
         ObjectInHands = objectToOccupyWith;
+    }
+
+    public void SetMovable(bool shouldSetObject, InteractableMovable objectToSet = null)
+    {
+        HandsAreBusy = shouldSetObject;
+        ObjectBeingMoved = objectToSet;
     }
 
     public void TryInteract(GameObject interactionInitiator)
