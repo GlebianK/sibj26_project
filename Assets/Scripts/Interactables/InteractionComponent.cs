@@ -14,7 +14,7 @@ public class InteractionComponent : MonoBehaviour
     [SerializeField] private GameObject bearPushPullPoint;
     [SerializeField] private GameObject playerView;
 
-    [Space, Header("Spere cast info")]
+    [Space, Header("Detection figures cast info")]
     [SerializeField] private LayerMask _layerMaskZ;
     [SerializeField] private LayerMask _layerMaskX;
     [SerializeField] private float _castRadius = .5f;
